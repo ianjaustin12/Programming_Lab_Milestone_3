@@ -80,20 +80,20 @@ public class App {
         }
     }
 
-        public static void action (User currentUser, ScoreableItems caveItems){
+    public static void action(User currentUser, ScoreableItems caveItems){
 
-            Scanner userChoice = new Scanner(System.in);
-            String command;
-            int score = currentUser.getScore();
-            while (score < 50) {
-                currentUser.showCurrentOptions();
-                System.out.println("");
-                System.out.println("So what do you wanna do? (Or type 'i' to get instructions)");
-                command = userChoice.nextLine();
-                currentUser.processCommand(command, caveItems);
-            }
-            userChoice.close();
+        Scanner userChoice = new Scanner(System.in);
+        String command;
+        int score = currentUser.getScore();
+        while (score < 50) {
+            currentUser.showCurrentOptions();
+            System.out.println("");
+            System.out.println("So what do you wanna do? (Or type 'i' to get instructions)");
+            command = userChoice.nextLine();
+            currentUser.processCommand(command, caveItems);
         }
+            userChoice.close();
     }
+}
 
 
