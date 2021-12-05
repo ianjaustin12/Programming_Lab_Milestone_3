@@ -47,6 +47,7 @@ public class Location {
         this.optionEast = optionEast;
     }
 
+
     //this is where the stupid hardcoded stuff starts... 
     //we dont want that
     public Location(CampusLoc currentPosition) {

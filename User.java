@@ -41,6 +41,12 @@ public class User {
     public int getScore() {
         return score;
     }
+    public void addScore(int s) {
+        score = score + s;
+    }
+    public void loseScore(int s) {
+        score = score + s;
+    }
 
     public String whatDoIDo() {
 
@@ -71,11 +77,20 @@ public class User {
                 items.displayCurrentItems(location.getCurrentPosition());
                 break;
             case "n": case "w": case "e": case "s":
-                this.move(command, items);
+                this.move(command);
                 break;
+            case "help": 
+                System.out.println("-------");
+                System.out.println(Help.getDirections());
+                System.out.println(Help.getPossibleDirections());
+                System.out.println("-------");
+                break;
+            case "quit":
+                System.out.print("This game is over.");
+                System.exit(0);
             default:
                 String item = command;
-                this.getItem(item, items);
+                this.getItem(item, items);   
         }
     }
 
@@ -88,7 +103,7 @@ public class User {
         System.out.println(instructions);
     }
 
-    private void move(String command, ScoreableItems items) {
+    private void move(String command) {
         Direction dir = null;
         switch (command.toLowerCase()) {
             case "n":
