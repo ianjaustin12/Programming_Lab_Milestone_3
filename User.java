@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class User {
     CampusLoc STARTING_POSITION = CampusLoc.Stag;
@@ -10,6 +9,7 @@ public class User {
     private Location location;
     private List<Item> items;
     private int score;
+    private int lives;
 
     public User() {
         this("bob","Sophomore");
@@ -21,8 +21,9 @@ public class User {
         items = new ArrayList<>();
         location = new Location(STARTING_POSITION);
         score = 0;
+        lives = 3;
     }
-
+//getter and setter methods
     public String getGrade() {
         return grade;
     }
@@ -46,107 +47,23 @@ public class User {
         score = score + s;
     }
     public void loseScore(int s) {
-        score = score + s;
+        score = score - s;
     }
-
-    public String whatDoIDo() {
-
-        return "My name is " + this.name + " and I am a " + this.grade;
+    public int getLives() {
+        return lives;
     }
-
+    public void setLives(int lives){
+        this.lives = lives;
+    }
+    public void addLife() {
+        lives++;
+    }
+    public void loseLife() {
+        lives++;
+    }
     public Location getLocation() {
         return location;
     }
-
-    public void showCurrentOptions() {
-        System.out.println("From " + location.getCurrentPosition() + ", " + "the options are:");
-        System.out.println("North: " + location.getOptionNorth());
-        System.out.println("South: " + location.getOptionSouth());
-        System.out.println("East: " + location.getOptionEast());
-        System.out.println("West: " + location.getOptionWest());
-    }
-
-    public void processCommand(String command, ScoreableItems items, Scanner scan) {
-        boolean isGoodCommand = false;
-        while(!isGoodCommand){
-            switch (command.toLowerCase()) {
-                case "i":
-                    this.showInstructions();
-                    isGoodCommand = true;
-                    break;
-                case "bag":
-                    this.showItems();
-                    isGoodCommand = true;
-                    break;
-                case "items":
-                    items.displayCurrentItems(location.getCurrentPosition());
-                    isGoodCommand = true;
-                    break;
-                case "n": case "w": case "e": case "s":
-                    this.move(command);
-                    isGoodCommand = true;
-                    break;
-                case "help": 
-                    System.out.println("-------");
-                    System.out.println(Help.getDirections());
-                    System.out.println(Help.getPossibleDirections());
-                    System.out.println("-------");
-                    isGoodCommand = true;
-                    break;
-                case "quit":
-                    System.out.print("This game is over.");
-                    isGoodCommand = true;
-                    System.exit(0);
-                default:
-                    System.out.print("That command was bad please try again.");
-                    command = scan.nextLine(); 
-                    isGoodCommand = false;
-                    break;  
-            }
-
-        }
-    }
-
-    private void showInstructions() {
-        String instructions = "Instructions:\n";
-        instructions += "- Type a direction to move (N/E/S/W)\n";
-        instructions += "- Type 'items' to see the items available at your current location\n";
-        instructions += "- Type <item's name> to get an item\n";
-        instructions += "- Type 'bag' to see all your items\n";
-        System.out.println(instructions);
-    }
-
-    private void move(String command) {
-        Direction dir = null;
-        switch (command.toLowerCase()) {
-            case "n":
-                dir = Direction.NORTH;
-                location.handleMove(getCurrentPosition(), dir);
-                break;
-            case "e":
-                dir = Direction.EAST;
-                location.handleMove(getCurrentPosition(), dir);
-                break;
-            case "s":
-                dir = Direction.SOUTH;
-                location.handleMove(getCurrentPosition(), dir);
-                break;
-            case "w":
-                dir = Direction.WEST;
-                location.handleMove(getCurrentPosition(), dir);
-                break;
-        }
-
-    }
-
-    private void getItem(String itemName, ScoreableItems items) {
-        Item itemGotten = items.getItem(itemName, location.getCurrentPosition());
-        if (!(itemGotten == null)) {
-            this.items.add(itemGotten);
-            this.score += itemGotten.getScore();
-        }
-    }
-
     public CampusLoc getCurrentPosition() {
         return location.getCurrentPosition();
     }
@@ -186,18 +103,49 @@ public class User {
     public void setOptionWest(CampusLoc area) {
         location.setOptionWest(area);
     }
+//prints the user
+    public String whatDoIDo() {
 
-    // to show all items that user has
-    private void showItems() {
+        return "My name is " + this.name + " and I am a " + this.grade;
+    }
+//moves the user
+    public void move(String command) {
+        Direction dir = null;
+        switch (command.toLowerCase()) {
+            case "n":
+                dir = Direction.NORTH;
+                break;
+            case "e":
+                dir = Direction.EAST;
+                break;
+            case "s":
+                dir = Direction.SOUTH;
+                break;
+            case "w":
+                dir = Direction.WEST;
+                break;
+        }
+        location.handleMove(getCurrentPosition(), dir);
+
+    }
+    
+//to place item in items (inventory) 
+    public void getItem(Item item){
+        if (item != null){
+            this.items.add(item);
+            this.score += item.getScore();
+            System.out.println("You have picked up " + item + " and now have " + score + " points.");
+        }
+    }
+// to show all items that user has
+    public void showItems() {
         System.out.println("Items: ");
         for (Item item : this.items) {
             System.out.println("- " + item.getName());
         }
         System.out.println();
     }
-
-
-
+    
 }
 
 

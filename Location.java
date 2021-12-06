@@ -1,6 +1,5 @@
 
 public class Location {
-
     private CampusLoc currentPosition;
     private CampusLoc optionNorth;
     private CampusLoc optionSouth;
@@ -47,6 +46,21 @@ public class Location {
         this.optionEast = optionEast;
     }
 
+    public void print(CampusLoc oldPosition) {
+
+        System.out.println("............");
+        if (!oldPosition.equals(currentPosition)) {
+            System.out.println("You have stumbled across a " + currentPosition);
+        } else {
+            System.out.println("You are still stuck at the " + currentPosition);
+        }
+        System.out.println("");
+
+    }
+
+    public void setCurrentPosition(String area) {
+
+    }
 
     //this is where the stupid hardcoded stuff starts... 
     //we dont want that
@@ -175,20 +189,6 @@ public class Location {
         print(oldPosition);
     }
 
-    public void print(CampusLoc oldPosition) {
-
-        System.out.println("............");
-        if (!oldPosition.equals(currentPosition)) {
-            System.out.println("You have stumbled across a " + currentPosition);
-        } else {
-            System.out.println("You are still stuck at the " + currentPosition);
-        }
-        System.out.println("");
-
-    }
-
-    public void setCurrentPosition(String area) {
-
-    }
+    
 }
 

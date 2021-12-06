@@ -11,17 +11,17 @@ public class ScoreableItems {
     }
 
     private void init() {
-        items.add(new Item("Book", 8, "Quad"));
-        items.add(new Item("Pencil", 8, "MainGate"));
+        items.add(new Item("Book", 5, "Quad"));
+        items.add(new Item("Pencil", 5, "MainGate"));
         items.add(new Item("Water", 10, "Stag"));
         items.add(new Item("Candy", 15, "Tully"));
         items.add(new Item("Ice Cream", 10, "Quad"));
         items.add(new Item("Spider", 10, "MainGate"));
-        items.add(new Item("Water", 11, "MainGate"));
+        items.add(new Item("Water", 15, "MainGate"));
         items.add(new Item("Coffee", 20, "Quad"));
     }
 
-    public void displayCurrentItems(CampusLoc location) {
+    public void displayCurrentItems(Location location) {
         Iterator<Item> it = items.iterator();
         System.out.println("Current available items here:");
         Item thisItem;
@@ -33,7 +33,7 @@ public class ScoreableItems {
         }
     }
 
-    public Item getItem(String name, CampusLoc location) {
+    public Item getItem(String name, Location location) {
         Item thisItem;
         Iterator<Item> it = items.iterator();
         while (it.hasNext()) {
@@ -46,7 +46,7 @@ public class ScoreableItems {
         }
 
         //in case not found the stuff after iterating
-        System.out.println("Invalid command, please try again.");
+        System.out.println("Invalid item, please try again.");
         return null;
     }
 
