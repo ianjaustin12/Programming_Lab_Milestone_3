@@ -1,194 +1,52 @@
+import java.io.Serializable;
+import java.util.Set;
 
-public class Location {
-    private CampusLoc currentPosition;
-    private CampusLoc optionNorth;
-    private CampusLoc optionSouth;
-    private CampusLoc optionWest;
-    private CampusLoc optionEast;
-
-    public CampusLoc getCurrentPosition(){
-        return currentPosition;
+public class Location implements Serializable{
+//instance variables
+    private String name;
+    private int xIndex;
+    private int yIndex;
+    String aboutRoom;
+    private Set<Item> items;
+//constructors
+    public Location (String currentPos, int y, int x,String about,Set<Item> inItems){
+        name = currentPos;
+        xIndex = x;
+        yIndex = y;
+        items = inItems;
+        aboutRoom = about;
     }
-
-    public void setCurrentPosition(CampusLoc currentPosition) {
-        this.currentPosition = currentPosition;
+//getter and setters
+    public void addItem(Item item){
+        items.add(item);
     }
-
-    public CampusLoc getOptionNorth() {
-        return optionNorth;
+    public void deleteItem(Item item){
+        items.remove(item);
     }
-
-    public void setOptionNorth(CampusLoc optionNorth) {
-        this.optionNorth = optionNorth;
+    public String getName(){
+        return name;
     }
-
-    public CampusLoc getOptionSouth() {
-        return optionSouth;
+    public void setName(String n) {
+        name = n;
     }
-
-    public void setOptionSouth(CampusLoc optionSouth) {
-        this.optionSouth = optionSouth;
+    public int getXIndex() {
+        return xIndex;
     }
-
-    public CampusLoc getOptionWest() {
-        return optionWest;
+    public int getYIndex() {
+        return yIndex;
     }
-
-    public void setOptionWest(CampusLoc  optionWest) {
-        this.optionWest = optionWest;
+//print methods
+    public void printOnEnter(){
+        System.out.println("................................Entering New Room.................................");
+        System.out.println("Welcome to " + name);
+        System.out.println(aboutRoom);
+        System.out.println("..................................................................................");
+        System.out.println();
     }
-
-    public CampusLoc getOptionEast() {
-        return optionEast;
-    }
-
-    public void setOptionEast(CampusLoc optionEast) {
-        this.optionEast = optionEast;
-    }
-
-    public void print(CampusLoc oldPosition) {
-
-        System.out.println("............");
-        if (!oldPosition.equals(currentPosition)) {
-            System.out.println("You have stumbled across a " + currentPosition);
-        } else {
-            System.out.println("You are still stuck at the " + currentPosition);
-        }
-        System.out.println("");
-
-    }
-
-    public void setCurrentPosition(String area) {
-
-    }
-
-    //this is where the stupid hardcoded stuff starts... 
-    //we dont want that
-    public Location(CampusLoc currentPosition) {
-        this.currentPosition = currentPosition;
-        optionNorth = CampusLoc.Quad;
-        optionSouth = CampusLoc.Tully;
-        optionWest = null;
-        optionEast = CampusLoc.MainGate;
-    }
-
-
-    public void handleMove(CampusLoc Loc, Direction dir) {
-
-        switch(Loc) {
-            case Stag:
-                handleStagMove(dir);
-                break;
-            case Quad:
-                handleQuadMove(dir);
-                break;
-            case MainGate:
-                handleMainGateMove(dir);
-                break;
-            case Tully:
-                handleTullyMove(dir);
-        }
-
-    }
-
-    public void handleStagMove(Direction dir) {
-        CampusLoc oldPosition = currentPosition;
-
-        switch (dir) {
-            case NORTH:
-                currentPosition = CampusLoc.Quad;
-                optionNorth = null;
-                optionSouth = CampusLoc.Stag;
-                optionEast = null;
-                optionWest = null;
-                break;
-            case EAST:
-                currentPosition = CampusLoc.MainGate;
-                optionNorth = null;
-                optionSouth = null;
-                optionEast = null;
-                optionWest = CampusLoc.Stag;
-                break;
-            case SOUTH:
-                currentPosition = CampusLoc.Tully;
-                optionNorth = CampusLoc.Stag;
-                optionSouth = null;
-                optionEast = null;
-                optionWest = null;
-                break;
-            case WEST:
-                currentPosition = CampusLoc.Stag;
-                optionNorth = CampusLoc.Quad;
-                optionSouth = CampusLoc.Tully;
-                optionEast = CampusLoc.MainGate;
-                optionWest = null;
-                break;
-        }
-        print(oldPosition);
-    }
-
-    public void handleQuadMove(Direction dir) {
-        CampusLoc oldPosition = currentPosition;
-        switch (dir) {
-            case NORTH: case EAST: case WEST:
-                currentPosition = CampusLoc.Quad;
-                optionNorth = null;
-                optionSouth = CampusLoc.Stag;
-                optionEast = null;
-                optionWest = null;
-                break;
-            case SOUTH:
-                currentPosition = CampusLoc.Stag;
-                optionNorth = CampusLoc.Quad;
-                optionSouth = CampusLoc.Tully;
-                optionEast = CampusLoc.MainGate;
-                optionWest = null;
-                break;
-        }
-        print(oldPosition);
-    }
-
-    public void handleMainGateMove(Direction dir) {
-        CampusLoc oldPosition = currentPosition;
-        switch (dir) {
-            case NORTH: case EAST: case SOUTH:
-                currentPosition = CampusLoc.MainGate;
-                optionNorth = null;
-                optionSouth = null;
-                optionEast = null;
-                optionWest = CampusLoc.Stag;
-                break;
-            case WEST:
-                currentPosition = CampusLoc.Stag;
-                optionNorth = CampusLoc.Quad;
-                optionSouth = CampusLoc.Tully;
-                optionEast = CampusLoc.MainGate;
-                optionWest = null;
-                break;
-        }
-        print(oldPosition);
-    }
-    public void handleTullyMove(Direction dir) {
-        CampusLoc oldPosition = currentPosition;
-        switch (dir) {
-            case NORTH: case EAST: case WEST:
-                currentPosition = CampusLoc.Quad;
-                optionNorth = CampusLoc.Stag;
-                optionSouth = null;
-                optionEast = null;
-                optionWest = null;
-                break;
-            case SOUTH:
-                currentPosition = CampusLoc.Stag;
-                optionNorth = CampusLoc.Quad;
-                optionSouth = CampusLoc.Tully;
-                optionEast = CampusLoc.MainGate;
-                optionWest = null;
-                break;
-        }
-        print(oldPosition);
-    }
-
     
+    @Override
+    public String toString(){
+        return name;
+    }
 }
 

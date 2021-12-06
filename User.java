@@ -1,25 +1,27 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class User {
-    CampusLoc STARTING_POSITION = CampusLoc.Stag;
-
     private String grade;
     private String name;
     private Location location;
-    private List<Item> items;
+    private Set<Item> items;
     private int score;
     private int lives;
+    String specialAbility;
 
     public User() {
-        this("bob","Sophomore");
+        this("bob");
     }
-
-    public User(String name, String grade) {
+    public User(String name){
+        this.name = name;
+        items = new HashSet<Item>();
+    }
+    public User(String name, String grade, Location STARTING_POSITION) {
         this.grade = grade;
         this.name = name;
-        items = new ArrayList<>();
-        location = new Location(STARTING_POSITION);
+        items = new HashSet<Item>();
+        location = STARTING_POSITION;
         score = 0;
         lives = 3;
     }
@@ -55,78 +57,56 @@ public class User {
     public void setLives(int lives){
         this.lives = lives;
     }
+    public Set<Item> getItems() {
+        return items;
+    }
+    public void addItem(Item item) {
+        if (items.contains(item))
+            items.add(item);
+    }
+    public void loseItem(Item item) {
+        if (!items.contains(item))
+            items.remove(item);
+    }
     public void addLife() {
         lives++;
     }
     public void loseLife() {
-        lives++;
+        lives--;
     }
     public Location getLocation() {
         return location;
     }
-    public CampusLoc getCurrentPosition() {
-        return location.getCurrentPosition();
-    }
-
-    public void setCurrentPosition(CampusLoc area) {
-        location.setCurrentPosition(area);
-    }
-
-    public CampusLoc getOptionNorth() {
-        return location.getOptionNorth();
-    }
-
-    public void setOptionNorth(CampusLoc area) {
-        location.setOptionNorth(area);
-    }
-
-    public CampusLoc getOptionSouth() {
-        return location.getOptionSouth();
-    }
-
-    public void setOptionSouth(CampusLoc area) {
-        location.setOptionSouth(area);
-    }
-
-    public CampusLoc getOptionEast() {
-        return location.getOptionEast();
-    }
-
-    public void setOptionEast(CampusLoc area) {
-        location.setOptionEast(area);
-    }
-
-    public CampusLoc getOptionWest() {
-        return location.getOptionWest();
-    }
-
-    public void setOptionWest(CampusLoc area) {
-        location.setOptionWest(area);
-    }
+    
+    
 //prints the user
     public String whatDoIDo() {
 
         return "My name is " + this.name + " and I am a " + this.grade;
     }
 //moves the user
-    public void move(String command) {
-        Direction dir = null;
+    public void move(String command, Map map) {
+        Location loc = null;
         switch (command.toLowerCase()) {
             case "n":
-                dir = Direction.NORTH;
+                loc = map.getNorthLocation(location);
                 break;
             case "e":
-                dir = Direction.EAST;
+                loc = map.getEastLocation(location);
                 break;
             case "s":
-                dir = Direction.SOUTH;
+                loc = map.getSouthLocation(location);
                 break;
             case "w":
-                dir = Direction.WEST;
+                loc = map.getWestLocation(location);;
                 break;
         }
-        location.handleMove(getCurrentPosition(), dir);
-
+        if(loc != null){
+            location = loc;
+            location.printOnEnter();
+        }
+        else
+            System.out.println("Whoopsies you cant go there.");
     }
     
 //to place item in items (inventory) 
@@ -135,15 +115,31 @@ public class User {
             this.items.add(item);
             this.score += item.getScore();
             System.out.println("You have picked up " + item + " and now have " + score + " points.");
+            System.out.println("..................................................................................");
+            System.out.println();
         }
     }
 // to show all items that user has
     public void showItems() {
+        System.out.println("..................................................................................");
         System.out.println("Items: ");
         for (Item item : this.items) {
             System.out.println("- " + item.getName());
         }
+        System.out.println("..................................................................................");
         System.out.println();
+    }
+//to use an item in battle
+    public void useItem(String item){
+
+    }
+    //to use an special ability in battle
+    public void specialAbility(){
+
+    }
+    //to steal items from user
+    public void steal(){
+
     }
     
 }

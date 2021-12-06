@@ -1,24 +1,13 @@
-public class Item {
-    private String name;    ///write name and score as const??
-    private int score;
-    private String location;
-    private Monster monster;
-    private User user;
+import java.io.Serializable;
 
-    public Item(String name, int score, String location) {
+public class Item implements Serializable{
+    private String name;    
+    private int score;
+    private Location location;
+    
+    public Item(String name, int score) {
         this.name = name;
         this.score = score;
-        this.location = location;
-    }
-    public Item(String name, int score, Monster m) {
-        this.name = name;
-        this.score = score;
-        this.monster = m;
-    }
-    public Item(String name, int score, User u) {
-        this.name = name;
-        this.score = score;
-        this.user = u;
     }
 
     public String getName() {
@@ -28,28 +17,11 @@ public class Item {
     public int getScore() {
         return score;
     }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-    public Monster getMonster() {
-        return monster;
-    }
-    public void setMonster(Monster monster) {
-        this.monster = monster;
-    }
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
-    }
+public Location getLocation(){
+    return location;
+}
     @Override
     public String toString(){
-        return name;
+        return "name = " + name + " score = " + score;
     }
 }

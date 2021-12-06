@@ -1,8 +1,8 @@
-public class Dragon extends Monster {
-    public Dragon(){
-        super("Dragon", 30);
-        super.setspecialAbility("Dragon's Breath");
-        super.addMonsterItems(new Item("Dragon's Shield", 15));
+public class Thief extends Monster {
+    public Thief(){
+        super("Thief", 15);
+        super.setspecialAbility("Run");
+        super.addMonsterItems(new Item("Exetendo Bag", 5));
     }
     @Override
     /* what the special ability does*/
