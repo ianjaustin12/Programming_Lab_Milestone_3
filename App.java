@@ -33,16 +33,17 @@ public class App {
         String command;
         int score = currentUser.getScore();
         while (score < 50) {
-            currentUser.showCurrentOptions();
-            System.out.println("");
     //start a fight 50% chance
             if (Math.random() <= 0.5){
                 Monster m = MonsterFactory.pickAMonster();
-                m.fight(currentUser);
+                m.fight(currentUser, userChoice);
             }
+            currentUser.showCurrentOptions();
+            System.out.println("");
             System.out.println("So what do you wanna do? (Or type 'i' to get instructions)");
+            userChoice.next();
             command = userChoice.nextLine();
-            currentUser.processCommand(command, caveItems);
+            currentUser.processCommand(command, caveItems, userChoice);
         }
         userChoice.close();
     }

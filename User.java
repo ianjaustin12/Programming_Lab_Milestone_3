@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class User {
     CampusLoc STARTING_POSITION = CampusLoc.Stag;
@@ -65,32 +66,44 @@ public class User {
         System.out.println("West: " + location.getOptionWest());
     }
 
-    public void processCommand(String command, ScoreableItems items) {
-        switch (command.toLowerCase()) {
-            case "i":
-                this.showInstructions();
-                break;
-            case "bag":
-                this.showItems();
-                break;
-            case "items":
-                items.displayCurrentItems(location.getCurrentPosition());
-                break;
-            case "n": case "w": case "e": case "s":
-                this.move(command);
-                break;
-            case "help": 
-                System.out.println("-------");
-                System.out.println(Help.getDirections());
-                System.out.println(Help.getPossibleDirections());
-                System.out.println("-------");
-                break;
-            case "quit":
-                System.out.print("This game is over.");
-                System.exit(0);
-            default:
-                String item = command;
-                this.getItem(item, items);   
+    public void processCommand(String command, ScoreableItems items, Scanner scan) {
+        boolean isGoodCommand = false;
+        while(!isGoodCommand){
+            switch (command.toLowerCase()) {
+                case "i":
+                    this.showInstructions();
+                    isGoodCommand = true;
+                    break;
+                case "bag":
+                    this.showItems();
+                    isGoodCommand = true;
+                    break;
+                case "items":
+                    items.displayCurrentItems(location.getCurrentPosition());
+                    isGoodCommand = true;
+                    break;
+                case "n": case "w": case "e": case "s":
+                    this.move(command);
+                    isGoodCommand = true;
+                    break;
+                case "help": 
+                    System.out.println("-------");
+                    System.out.println(Help.getDirections());
+                    System.out.println(Help.getPossibleDirections());
+                    System.out.println("-------");
+                    isGoodCommand = true;
+                    break;
+                case "quit":
+                    System.out.print("This game is over.");
+                    isGoodCommand = true;
+                    System.exit(0);
+                default:
+                    System.out.print("That command was bad please try again.");
+                    command = scan.nextLine(); 
+                    isGoodCommand = false;
+                    break;  
+            }
+
         }
     }
 

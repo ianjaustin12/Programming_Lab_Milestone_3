@@ -21,20 +21,32 @@ public class Monster {
     public int getpowerLevel(){return powerLevel;}
     public void setspecialAbility(String n){specialAbility = n;}
     public String getspecialAbility(){return specialAbility;}
-    
+
 //returns true if user wins, false if monster wins
-    public boolean fight(User currentUser){
+    public boolean fight(User currentUser, Scanner scan){
         int worth = powerLevel*10;
-        System.out.println("This fight is worth" + worth + "points");
+        System.out.println("A wild Monster has appeared");
+        System.out.println("This fight is worth " + worth + " points");
+        System.out.println("Would you like to fight? Answer with y/n");
+        String fight = scan.nextLine();
+        if (fight.equalsIgnoreCase("n")){
+            return false;
+        }
     //initalize variables 
         int userWins = 0;
         int monsterWins = 0;
-        Scanner scan = new Scanner(System.in);
     //runs this for each "battle"
         while(true){
             System.out.println("Please input a number 1 2 or 3");
     //get user input for battle
-            int userChoice = scan.nextInt();
+            int userChoice;
+            try{
+            userChoice = scan.nextInt();
+            }
+            catch(Exception ex){
+                System.out.println("Integer expected of value 1, 2, or 3. Please input one of those values");
+                continue;
+            }
             String userChoiceToString;
     //checks and converts user choice to string then prints else restarts battle
             if (userChoice == 1||userChoice == 2||userChoice == 3){
@@ -44,6 +56,7 @@ public class Monster {
                 System.out.println("The input " + userChoice + " is invalid.");
                 continue;
             }
+            System.out.println();
             System.out.println("You have chosen to throw " + userChoiceToString);
     //gets the monster's choice
             int monsterChoice = getMonsterChoice(userChoice);
@@ -51,35 +64,37 @@ public class Monster {
             System.out.println(name + "has chosen to throw " + monsterChoiceToString);
     //check tie
             if(userChoice == monsterChoice){
-                System.out.println("User and"+ name +"Choice were equal.");
+                System.out.println("User and "+ name +" choice were equal.");
                 System.out.println("We have a tie. No Winner.");
                 System.out.println("To the next battle!");
+                System.out.println();
                 continue;
             }   
     //battle
             if (battle(userChoice, monsterChoice)){
                 System.out.println("The User has won this battle.");
                 userWins++;
-                System.out.println("User has won" + userWins + "battles");
+                System.out.println("User has won " + userWins + " battles");
             }
             else{
-                System.out.println(name + "has won this battle.");
+                System.out.println(name + " has won this battle.");
                 monsterWins++;
-                System.out.println(name + "has won" + monsterWins + "battles");
+                System.out.println(name + " has won " + monsterWins + " battles");
             }
     //check if user or monster won
             if (userWins >= 5 || monsterWins >= 5)
                 break;
             System.out.println("No winner yet. Onto the next battle;");
         }
-        scan.close();
         if (userWins >= 5){
-            System.out.print("You have won this fight and gotten " + worth + " points.");
+            System.out.println("You have won this fight and gotten " + worth + " points.");
             currentUser.addScore(worth);
+            return true;
         }
-        if (monsterWins >= 5){
-            System.out.print("You have won this fight and gotten " + worth + " points.");
+        else if (monsterWins >= 5){
+            System.out.println(name + " has won this fight and you have lost " + worth + " points.");
             currentUser.loseScore(worth);
+            return false;
         }
         System.out.println("Something went wrong in the fight. Monster wins: " + monsterWins + "User Wins: " + userWins + "...my fault");
         return false;
