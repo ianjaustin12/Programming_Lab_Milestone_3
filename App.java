@@ -1,4 +1,5 @@
 import java.util.Iterator;
+import java.util.Set;
 
 public class App {
 
@@ -53,17 +54,17 @@ public class App {
     //if point cap reached go to final boss
         if(currentUser.getScore() >= 50){
             System.out.println("..................................Onto The Boss Battle............................");
-            if (MonsterFactory.finalBoss(currentUser, scan)){
-                System.out.println("..................................Game Over.......................................");
+            if (MonsterFactory.finalBoss(currentUser, scan, map)){
                 System.out.println("Congratulations you have won this game!");
+                System.out.println("..................................Game Over.......................................");
             }
             else
                 System.out.println("The Boss has defeated you. Better Luck Next time.");
         }
     //if out of lives game lost.
         if(currentUser.getLives() <= 0 ){
-            System.out.println("..................................Game Over.......................................");
             System.out.println("You have lost all of your lives and been eliminated.");
+            System.out.println("..................................Game Over.......................................");
         }
     }
 //processes a command from user  
@@ -133,19 +134,24 @@ public class App {
     public static void itemsCommand(ScoreableItems items){
         System.out.println("...............................Begin Item Pickup..................................");
         //displays the items in the room
-        items.displayLocationCurrentItems(currentUser.getLocation());
-        //gets yes or no from user
-        System.out.println("Do you want to pick up an item? y/n");
-        if (scan.yesOrNo()){
-        //gets item choice from user
-            System.out.println("What item do you want to pick up?");
-            String item = scan.nextLine();
-            Item itemGotten = items.getItem(item, currentUser.getLocation());
-            //monster appears with percentage increase by 10% every 5 points on item
-            //true if fight won or no monster, false if fight lost
-            if (MonsterFactory.monsterProtectingItem(currentUser, scan, itemGotten)){
-                currentUser.getItem(itemGotten);
-            }  
+        currentUser.getLocation().displayCurrentItems();
+        Set<Item> i = currentUser.getLocation().getItems();
+        if(i != null && !i.isEmpty() && i.size() != 0){
+            //gets yes or no from user
+            System.out.println("Do you want to pick up an item? y/n");
+            if (scan.yesOrNo()){
+            //gets item choice from user
+                System.out.println("What item do you want to pick up?");
+                String item = scan.nextLine();
+                try{
+                    Item itemGotten = items.getItem(item, currentUser.getLocation());
+                    //monster appears with percentage increase by 10% every 5 points on item
+                    //true if fight won or no monster, false if fight lost
+                    if (MonsterFactory.monsterProtectingItem(currentUser, scan, itemGotten)){
+                        currentUser.getItemPrint(itemGotten);
+                }}
+                catch(Exception e){}  
+            }
         }
         else {
             System.out.println("Okay... Move on.");
@@ -157,7 +163,7 @@ public class App {
         String input;
         System.out.println("...............................Welcome Admin......................................");
         while(true){
-            System.out.println("What u wanna do? create/delete/save/print");
+            System.out.println("What u wanna do? create/delete/save/print/leave/");
             input = scan.nextLine();
             if (input.equals("create")){
                 System.out.println("What u wanna create? items/location");
@@ -190,7 +196,7 @@ public class App {
                 }
             }
             if (input.equals("print")){
-                System.out.println("What u wanna print? items/location");
+                System.out.println("What u wanna print? items/location/map");
                 input = scan.nextLine();
                 if (input.equals("location")){
                     map.printMap();
@@ -198,9 +204,23 @@ public class App {
                 if (input.equals("items")){
                     caveItems.printItems();
                 }
+                if (input.equals("map")){
+                    map.printMap();
+                }
+
             }
             if (input.equals("leave")){
                 break;
+            }
+            if (input.startsWith("go to")){
+                String locName = input.substring(5).trim();
+                System.out.print("trying to move to " + locName);
+                try{
+                    currentUser.move(map.findByName(locName));
+                }catch(Exception e){}
+            }
+            if (input.equals("win")){
+                currentUser.addScore(50);
             }
         }
         System.out.println("...............................Goodbye Admin......................................");
@@ -225,10 +245,16 @@ public class App {
         System.out.println("item points:");
         int points = scan.getScanner().nextInt();
         caveItems.addItem(new Item(name, (int)points));
-        System.out.println("Is this for a monster?");
-        
         Item item = new Item(name, (int)points);
         caveItems.addItem(item);
+        System.out.println("Is this for a monster?");
+        if(scan.yesOrNo()){
+
+        }
+        System.out.println("Is this for a location?");
+        if(scan.yesOrNo()){
+            
+        }
         map.selectLocation(scan).addItem(item);
         System.out.println("...............................Item Created......................................");
        

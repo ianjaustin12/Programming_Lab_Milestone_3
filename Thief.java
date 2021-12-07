@@ -6,12 +6,12 @@ public class Thief extends Monster {
     }
     @Override
     /* what the special ability does*/
-    public void specialAbility() {
+    public void specialAbility(Scan scan, User user) {
         
     }
     @Override
     /* what the item used does*/
-    public void useItem() {
+    public void useItem(Scan scan, User user, Item item) {
         
     }
     @Override
@@ -19,11 +19,10 @@ public class Thief extends Monster {
         return throwRandom();
     }
     @Override
-    public void fightDenied(Scan scan){
-        
-    }
-    @Override
-    public void steal(){
-
+    public void fightDenied(Scan scan, User user){
+        System.out.println(getName() + " takes 2 items for you skipping the battle :(");
+        int count = 0;
+        while(count++ <= 2)
+            steal(user);
     }
 }

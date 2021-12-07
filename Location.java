@@ -1,4 +1,6 @@
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public class Location implements Serializable{
@@ -10,15 +12,25 @@ public class Location implements Serializable{
     private Set<Item> items;
 //constructors
     public Location (String currentPos, int y, int x,String about,Set<Item> inItems){
-        name = currentPos;
+        if (currentPos != null)
+            name = currentPos;
+        else
+            name = "";
         xIndex = x;
         yIndex = y;
-        items = inItems;
-        aboutRoom = about;
+        if (inItems != null)
+            items = inItems;
+        else
+            items = new HashSet<Item>();
+        if (about != null)
+            aboutRoom = about;
+        else  
+            aboutRoom = "";
     }
 //getter and setters
     public void addItem(Item item){
         items.add(item);
+        item.setLocation(this);
     }
     public void deleteItem(Item item){
         items.remove(item);
@@ -35,6 +47,24 @@ public class Location implements Serializable{
     public int getYIndex() {
         return yIndex;
     }
+    public Set<Item> getItems() {
+        return items;
+    }
+    public void setItems(Set<Item> items) {
+        this.items = items;
+    }
+    public Item findItemByName(String name){
+        Item thisItem = null;
+        Iterator<Item> it = items.iterator();
+        while (it.hasNext()) {
+            thisItem = it.next();
+            try{
+            if(thisItem.getName().equals(name))
+                return thisItem;
+            }catch(Exception e){}
+        }
+        return null;
+    }
 //print methods
     public void printOnEnter(){
         System.out.println("................................Entering New Room.................................");
@@ -42,6 +72,21 @@ public class Location implements Serializable{
         System.out.println(aboutRoom);
         System.out.println("..................................................................................");
         System.out.println();
+    }
+    public void displayCurrentItems() {
+        Iterator<Item> it = getItems().iterator();
+        System.out.println("Current available items here:");
+        Item thisItem;
+        try{
+        while (it.hasNext()) {
+            thisItem = it.next();
+            if (thisItem.getLocation().equals(this)) {
+                System.out.println("    " + thisItem.getName() + ", worth " + thisItem.getScore() + " point(s)");
+            }
+        }
+        }catch(Exception e){}
+        if(getItems() == null || getItems().isEmpty() || getItems().size() == 0)
+                System.out.println("No items here.");
     }
     
     @Override

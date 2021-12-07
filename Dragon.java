@@ -6,12 +6,12 @@ public class Dragon extends Monster {
     }
     @Override
     /* what the special ability does*/
-    public void specialAbility() {
+    public void specialAbility(Scan scan, User user) {
         
     }
     @Override
     /* what the item used does*/
-    public void useItem() {
+    public void useItem(Scan scan, User user, Item item) {
         
     }
     @Override
@@ -19,11 +19,11 @@ public class Dragon extends Monster {
         return throwRandom();
     }
     @Override
-    public void fightDenied(Scan scan){
+    public void fightDenied(Scan scan, User user){
         
     }
     @Override
-    public void steal(){
+    public void steal(User user){
 
     }
 }

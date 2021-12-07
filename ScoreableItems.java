@@ -17,17 +17,7 @@ public class ScoreableItems {
         //loadFromFile();
     }
 
-    private void init() {
-        items.add(new Item("Book", 5));
-        items.add(new Item("Pencil", 5));
-        items.add(new Item("Water", 10));
-        items.add(new Item("Candy", 15));
-        items.add(new Item("Ice Cream", 10));
-        items.add(new Item("Spider", 10));
-        items.add(new Item("Water", 15));
-        items.add(new Item("Coffee", 20));
-
-    }
+    private void init() {}
     public void addItem(Item item){
         items.add(item);
     }
@@ -37,19 +27,7 @@ public class ScoreableItems {
     public Set<Item> getItems() {
         return items;
     }
-    public void displayLocationCurrentItems(Location location) {
-        Iterator<Item> it = items.iterator();
-        System.out.println("Current available items here:");
-        Item thisItem;
-        while (it.hasNext()) {
-            thisItem = it.next();
-            if (thisItem.getLocation().equals(location)) {
-                System.out.println("    " + thisItem.getName() + ", worth " + thisItem.getScore() + " point(s)");
-            }
-        }
-    }
     
-
     public Item getItem(String name, Location location) {
         Item thisItem;
         Iterator<Item> it = items.iterator();

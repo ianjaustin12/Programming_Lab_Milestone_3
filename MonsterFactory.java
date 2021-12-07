@@ -85,12 +85,14 @@ public class MonsterFactory{
     //display fight stats
             int worth = m.getpowerLevel()*5;
             System.out.println("A wild Monster has appeared");
-            System.out.println("This monster has a power level of " + m.getpowerLevel() + " points");
+            System.out.println("This monsters name is " + m.getName());
+            System.out.println(m.getName() + " has a power level of " + m.getpowerLevel() + " points");
             System.out.println("This fight is worth " + worth + " points");
     //asks user if they will fight    
-            if (willFight(scan, m)){
+            if (willFight(scan, m, currentUser)){
         //fights user
-                if(m.fight(currentUser, scan)){
+                String fightOutput = m.fight(currentUser, scan);
+                if(fightOutput.equals("user")){
             //does this if user won
                     System.out.println("You have won this fight and gotten " + worth + " points.");
                     currentUser.addScore(worth);
@@ -100,9 +102,20 @@ public class MonsterFactory{
                     }
                 }
             //does this if user lost
-                else{
+                else if(fightOutput.equals("monster")){
                     System.out.println(m.getName() + " has won this fight and you have lost your lives");
                     currentUser.loseScore(worth);
+                }
+                else if (fightOutput.equals("user run")){
+                    System.out.println(currentUser.getName() + " has run away. They will be punished.");
+                    m.fightDenied(scan, currentUser);
+                }
+                else if (fightOutput.equals("monster run")){
+                    System.out.println(m.getName() + " has run away. Seems like you got lucky.");
+                    if (currentUser.getLives() < 3){
+                        System.out.println("Your life count will now be reset to 3.");
+                        currentUser.setLives(3);
+                    }
                 }
             }
         }
@@ -123,30 +136,72 @@ public class MonsterFactory{
             System.out.println("If "+currentUser.getName()+" wins they get the item.");
             System.out.println("If "+m.getName()+" wins they get the item.");
     //asks user if they will fight        
-            if (willFight(scan, m)){
-        //fights if user says yes
-                if(m.fight(currentUser, scan)){
-            //this if user won the fight
+            if (willFight(scan, m, currentUser)){
+        
+                String fightOutput = m.fight(currentUser, scan);
+                if(fightOutput.equals("user")){
+            //does this if user won
                     System.out.println("You have won this fight and gotten " + item);
+                    if (currentUser.getLives() < 3){
+                        System.out.println("Your life count will now be reset to 3.");
+                        currentUser.setLives(3);
+                    }
                     return true;
                 }
-                else{
-            //this if user lost the fight
+            //does this if user lost
+                else if(fightOutput.equals("monster")){
                     System.out.println(m.getName() + " has won this fight and you have lost " + item);
+                    return false;
+                }
+                else if (fightOutput.equals("user run")){
+                    System.out.println(currentUser.getName() + " has run away. They will be punished.");
+                    m.fightDenied(scan, currentUser);
+                    return false;
+                }
+                else if (fightOutput.equals("monster run")){
+                    System.out.println(m.getName() + " has run away. Seems like you lost this item.");
+                    if (currentUser.getLives() < 3){
+                        System.out.println("Your life count will now be reset to 3.");
+                        currentUser.setLives(3);
+                    }
                     return false;
                 }
             }
         }
-        return true;
+        return false;
     }
 //final boss Fight
-    public static boolean finalBoss(User currentUser, Scan scan){
-        
-        return true;
+    public static boolean finalBoss(User currentUser, Scan scan, Map map){
+        System.out.println("Welcome to... FINAL MONSTER FIGHT CLUB!");
+        Monster m = new FinalBoss();
+        currentUser.move("finalBoss", map);
+        System.out.println("Are you ready to fight the boss?");
+        if(scan.yesOrNo())
+            System.out.println("Good thats what we like to hear");
+        else
+            System.out.println("Well that Sucks for you!");
+        System.out.println("LETS GET READY TO RUMBLEEEE");
+        System.out.println("By the way you both have 100 lives... Good luck.");
+        currentUser.setLives(100);
+        String ret = m.fight(currentUser, scan);
+        if (ret.equals("user"))
+            return true;
+        else if (ret.equals("monster"))
+            return false;
+        else if (ret.equals("user run")){
+                System.out.println(currentUser.getName() + " has run away. Death to them.");
+                currentUser.setLives(0);
+                return false;
+            }
+        else if (ret.equals("monster run")){
+            System.out.println(m.getName() + " has run away. You are unstoppable!");
+            return true;
+        }
+        return false;
     }
 //used to ask user if they would like to fight or not
 //can make users regret not fighting certain monster
-    public static boolean willFight(Scan scan, Monster m){
+    public static boolean willFight(Scan scan, Monster m, User currentUser){
         System.out.println("Would You like to read the rules of Monster Fight Club before the fight?");
         if(scan.yesOrNo()){
             Help.fightRules();
@@ -155,7 +210,7 @@ public class MonsterFactory{
         if(scan.yesOrNo()){
             return true;
         }
-        m.fightDenied(scan);
+        m.fightDenied(scan, currentUser);
         return false;   
     }
 }

@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.Set;
 public class Monster extends User{
     
@@ -21,38 +22,47 @@ public class Monster extends User{
     public void setspecialAbility(String n){specialAbility = n;}
     public String getspecialAbility(){return specialAbility;}
     public Set<Item> getItems(String n){return super.getItems();}
-    public void addMonsterItems(Item item){super.addItem(item);}
+    public void addMonsterItems(Item item){super.getItemNoPrint(item);}
     public void removeMonsterItems(Item item){super.loseItem(item);}
 
 //returns true if user wins, false if monster wins
-    public boolean fight(User currentUser, Scan scan){
+    public String fight(User currentUser, Scan scan){
         System.out.println("Welcome to monster fight club!");
     //runs this for each "battle"
-        while(true){
+        boolean inFight = true;
+        String userChoice = "";
+        String monsterChoice = "";
+        while(inFight){
             System.out.println("Please input rock, paper, or scissors or i to see the rules again.");
     //get user input for battle
-            String userChoice = scan.nextLine();
+            userChoice = scan.nextLine();
     //parse command if false then it was not for battle
-            if (!parseCommand(userChoice, currentUser)){
+            if (!parseCommand(userChoice, currentUser,scan,this)){
                 continue;
             }
     //display choice
             System.out.println();
             System.out.println("You have chosen to " + userChoice);
     //gets the monster's choice
-            String monsterChoice = getMonsterChoice(userChoice);
-            if (!parseCommand(monsterChoice, this)){
+            monsterChoice = getMonsterChoice(userChoice);
+            if (!parseCommand(monsterChoice, this,scan,currentUser)){
                 continue;
             }
             System.out.println(getName() + " has chosen to " + monsterChoice);          
     //battle
-            if (battle(userChoice, monsterChoice, currentUser)){
-                loseLife();  
+            if(checkBattleSyntax(userChoice)&& checkBattleSyntax(monsterChoice)){
+                if (battle(userChoice, monsterChoice, currentUser)){
+                    loseLife();  
+                }
+                else{
+                    currentUser.loseLife();
+                }
+                System.out.println(currentUser.getName() + " has " + currentUser.getLives() + " lives, and " + getName() + " has " + getLives()+ " lives");
+    //checks if user or monster decided to run
+            }else if (userChoice.equals("run") || monsterChoice.equals("run") ){
+                inFight = false;
+                break;
             }
-            else{
-                currentUser.loseLife();
-            }
-            System.out.println(currentUser.getName() + " has " + currentUser.getLives() + " lives, and " + getName() + " has " + getLives()+ " lives");
     //check if user or monster won yet
             if (currentUser.getLives() <= 0|| getLives() <= 0)
                 break;
@@ -61,14 +71,20 @@ public class Monster extends User{
         }
         //if user lost
         if (currentUser.getLives() <= 0){
-            return false;
+            return "monster";
         }
-        //if monster won
+        //if monster lost
         else if (getLives() <= 0){
-            return true;
+            return "user";
+        }
+        else if(!inFight){
+            if (userChoice.equals("run"))
+                return "user run";
+            if (monsterChoice.equals("run"))
+                return "monster run";
         }
         System.out.println("Something went wrong in the fight. Monster lives: " + getLives() + "User lives: " + currentUser.getLives() + "...my fault");
-        return false;
+        return "error";
     }
     
 //this is 1 battle between monster and user 
@@ -103,9 +119,14 @@ public class Monster extends User{
         addLife();
         return true;
     }
-
+    public boolean checkBattleSyntax(String command){
+        if ((command.equals("rock")||command.equals("paper")||command.equals("scissors"))){
+            return true;
+        }
+        return false;
+    }
 //parse command
-    public boolean parseCommand(String command, User who){
+    public boolean parseCommand(String command, User who, Scan scan, User notWho){
     //rock, paper, scissors
         if ((command.equals("rock")||command.equals("paper")||command.equals("scissors"))){
             return true;
@@ -123,12 +144,20 @@ public class Monster extends User{
     //use <item>
         else if(command.startsWith("use")){
             command = command.substring(3);
-            who.useItem(command);
-            return false;
+            Item item = who.findItemByName(command);
+            who.useItem(scan, notWho, item);
+            return true;
         }
         else if (command.startsWith("special ability")){
-            who.specialAbility();
-            return false;
+            who.specialAbility(scan, notWho);
+            return true;
+        }
+        else if (command.equals("run")){
+            return true;
+        }
+        else if (command.equals("admin kill")){
+            setLives(0);
+            return true;
         }
 
     //bad command
@@ -172,20 +201,37 @@ public class Monster extends User{
     }
 //if a special ability is used then do this
 //change by subclass     
-    public void specialAbility(){
+    public void specialAbility(Scan scan, User user){
 
     }
 //if an item is used then do this
 //change by subclass     
-    public void useItem(){
+    public void useItem(Scan scan, User user, Item item){
 
     }
 //if user denies a fight with this monster
-    public void fightDenied(Scan scan){
-        
+    public void fightDenied(Scan scan, User user){
+        if (Math.random() <= 0.25)
+            steal(user);
     }
 //to steal items from user
-    public void steal(){
-
+    public void steal(User user){
+        Set<Item>items = user.getItems();
+        int rand = (int)Math.ceil(Math.random()* items.size());
+        int count = 0;
+        Item thisItem = null;
+        Iterator<Item> it = items.iterator();
+        while (it.hasNext()) {
+            count++;
+            thisItem = it.next();
+            if(rand == count){
+                break;
+            }
+        }
+        if(thisItem != null){
+            System.out.println( getName() + " has stolen your " + thisItem.getName() + "!");
+            user.loseItem(thisItem);
+            addMonsterItems(thisItem);
+        }
     }
 }

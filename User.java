@@ -1,5 +1,7 @@
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
+
 
 public class User {
     private String grade;
@@ -60,13 +62,27 @@ public class User {
     public Set<Item> getItems() {
         return items;
     }
-    public void addItem(Item item) {
-        if (items.contains(item))
+    public void getItemNoPrint(Item item) {
+        if (items.contains(item)){
             items.add(item);
+            score += item.getScore();
+        }
+    }
+    //to place item in items (inventory) 
+    public void getItemPrint(Item item){
+        if (item != null){
+            this.items.add(item);
+            this.score += item.getScore();
+            System.out.println("You have picked up " + item + " and now have " + score + " points.");
+            System.out.println("..................................................................................");
+            System.out.println();
+        }
     }
     public void loseItem(Item item) {
-        if (!items.contains(item))
+        if (!items.contains(item)){
             items.remove(item);
+            score -= item.getScore();
+        }
     }
     public void addLife() {
         lives++;
@@ -108,17 +124,11 @@ public class User {
         else
             System.out.println("Whoopsies you cant go there.");
     }
-    
-//to place item in items (inventory) 
-    public void getItem(Item item){
-        if (item != null){
-            this.items.add(item);
-            this.score += item.getScore();
-            System.out.println("You have picked up " + item + " and now have " + score + " points.");
-            System.out.println("..................................................................................");
-            System.out.println();
-        }
+    public void move(Location loc){
+        location = loc;
+        location.printOnEnter();
     }
+
 // to show all items that user has
     public void showItems() {
         System.out.println("..................................................................................");
@@ -129,17 +139,45 @@ public class User {
         System.out.println("..................................................................................");
         System.out.println();
     }
+    public Item findItemByName(String name){
+        Item thisItem = null;
+        Iterator<Item> it = items.iterator();
+        while (it.hasNext()) {
+            thisItem = it.next();
+            try{
+            if(thisItem.getName().equals(name))
+                return thisItem;
+            }catch(Exception e){}
+        }
+        return null;
+    }
 //to use an item in battle
-    public void useItem(String item){
+    public void useItem(Scan scan, User user, Item item){
 
     }
     //to use an special ability in battle
-    public void specialAbility(){
+    public void specialAbility(Scan scan, User user){
 
     }
-    //to steal items from user
-    public void steal(){
-
+//to steal items from monster
+    public void steal(User user){
+        Set<Item>items = user.getItems();
+        int rand = (int)Math.ceil(Math.random()* items.size());
+        int count = 0;
+        Item thisItem = null;
+        Iterator<Item> it = items.iterator();
+        while (it.hasNext()) {
+            count++;
+            thisItem = it.next();
+            if(rand == count){
+                break;
+            }
+        }
+        if(thisItem != null){
+            System.out.println(getName() + " has stolen " + thisItem.getName() + " from "+ user + "!");
+            user.loseItem(thisItem);
+            getItemPrint(thisItem);
+        }
     }
     
 }
