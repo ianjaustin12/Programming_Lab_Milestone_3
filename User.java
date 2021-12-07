@@ -6,6 +6,7 @@ import java.util.Set;
 public class User {
     private String grade;
     private String name;
+    private Location previousLocation;
     private Location location;
     private Set<Item> items;
     private int score;
@@ -68,6 +69,12 @@ public class User {
             score += item.getScore();
         }
     }
+    public Location getPreviousLocation() {
+        return previousLocation;
+    }
+    public void setPreviousLocation(Location previousLocation) {
+        this.previousLocation = previousLocation;
+    }
     //to place item in items (inventory) 
     public void getItemPrint(Item item){
         if (item != null){
@@ -118,13 +125,16 @@ public class User {
                 break;
         }
         if(loc != null){
+            previousLocation = location;
             location = loc;
             location.printOnEnter();
         }
         else
             System.out.println("Whoopsies you cant go there.");
     }
+    
     public void move(Location loc){
+        previousLocation = location;
         location = loc;
         location.printOnEnter();
     }
@@ -151,10 +161,13 @@ public class User {
         }
         return null;
     }
-//to use an item in battle
+    //to use an item in battle
     public void useItem(Scan scan, User user, Item item){
-
+        System.out.println(getName() + " uses " + item.getName());
+        System.out.println(user.getName() + " loses"+ item.getScore() +" lives.");
+        user.setLives(user.getLives()-item.getScore());
     }
+
     //to use an special ability in battle
     public void specialAbility(Scan scan, User user){
 

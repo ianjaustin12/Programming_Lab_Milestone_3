@@ -194,19 +194,33 @@ public class Monster extends User{
     }
 
 /* ---------------------------------methods  to override ---------------------------------------- */
-//to get a monsters choice
-//can change this depending on power level by subclass to use special ability and items
-    public String getMonsterChoice(String userChoice){
-        return throwRandom();
+public void useItem(Scan scan, User user, Item item){
+    System.out.println(getName() + " uses " + item.getName());
+    System.out.println(user.getName() + " loses"+ item.getScore() +" lives.");
+    user.setLives(user.getLives()-item.getScore());
+}
+public String getMonsterChoice(String userChoice){
+    double rand = Math.random();
+    if(rand <= 0.05)
+        return "special ability";
+    if(rand >= 0.05 && rand <= 0.5){
+        int randItem = (int)Math.ceil(Math.random()*getItems().size());
+        int count=0;
+        Item item = null;
+        Iterator<Item> it = getItems().iterator();
+        while(it.hasNext()){
+            count++;
+            item = it.next();
+            if(count == randItem)
+                break;
+        }
+        return "use " + item;
     }
+    return throwRandom();
+}
 //if a special ability is used then do this
 //change by subclass     
     public void specialAbility(Scan scan, User user){
-
-    }
-//if an item is used then do this
-//change by subclass     
-    public void useItem(Scan scan, User user, Item item){
 
     }
 //if user denies a fight with this monster

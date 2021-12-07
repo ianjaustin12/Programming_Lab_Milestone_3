@@ -75,13 +75,15 @@ public class MonsterFactory{
         }
         return m;
     }
-    //boss Voldemort the Poltergeist
+
 //called to see if there is a monster guarding the room
     public static void monsterInRoom(User currentUser, Scan scan){
     //50% chance of monster in the room
-        if (Math.random() <= 0.5){
+        Monster m = checkRoomForMonster(currentUser);
+        if (Math.random() <= 0.5 || m != null){
     //picks a monster to fight
-            Monster m = MonsterFactory.pickAMonster();
+            if(m == null)
+                m = MonsterFactory.pickAMonster();
     //display fight stats
             int worth = m.getpowerLevel()*5;
             System.out.println("A wild Monster has appeared");
@@ -168,7 +170,7 @@ public class MonsterFactory{
                 }
             }
         }
-        return false;
+        return true;
     }
 //final boss Fight
     public static boolean finalBoss(User currentUser, Scan scan, Map map){
@@ -199,6 +201,7 @@ public class MonsterFactory{
         }
         return false;
     }
+
 //used to ask user if they would like to fight or not
 //can make users regret not fighting certain monster
     public static boolean willFight(Scan scan, Monster m, User currentUser){
@@ -212,5 +215,22 @@ public class MonsterFactory{
         }
         m.fightDenied(scan, currentUser);
         return false;   
+    }
+//returns a monster if user is in specific room otherwise null
+    public static Monster checkRoomForMonster(User user){
+        Location loc = user.getLocation();
+        switch (loc.getName()){
+            case "Armory": case "Mosh Pit":
+                return selectTierTwoMonster();
+            case "The Ring": case "Underground Stream":
+                return selectTierThreeMonster();
+            case"The Arena": case "The Bunkers":
+                return selectTierOneMonster();
+            case "Treasure Room":
+                return new Dragon();
+            case "finalBoss":
+                return new FinalBoss();
+        }
+        return null;
     }
 }

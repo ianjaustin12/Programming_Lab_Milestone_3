@@ -59,10 +59,11 @@ public class Location implements Serializable{
         while (it.hasNext()) {
             thisItem = it.next();
             try{
-            if(thisItem.getName().equals(name))
+            if(thisItem.getName().equalsIgnoreCase(name))
                 return thisItem;
             }catch(Exception e){}
         }
+        System.out.println("Could not find the referenced item.");
         return null;
     }
 //print methods

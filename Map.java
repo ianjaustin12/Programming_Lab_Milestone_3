@@ -13,9 +13,10 @@ public class Map {
 
     public Map(){
         map = new Location[7][5];
-        //printMap();
+        //
         init();
-        //loadFromFile();
+        loadFromFile();
+        printMap();
     }
 
     public void init(){

@@ -144,11 +144,12 @@ public class App {
                 System.out.println("What item do you want to pick up?");
                 String item = scan.nextLine();
                 try{
-                    Item itemGotten = items.getItem(item, currentUser.getLocation());
+                    Item itemGotten = currentUser.getLocation().findItemByName(item);
                     //monster appears with percentage increase by 10% every 5 points on item
                     //true if fight won or no monster, false if fight lost
                     if (MonsterFactory.monsterProtectingItem(currentUser, scan, itemGotten)){
                         currentUser.getItemPrint(itemGotten);
+                        currentUser.getLocation().deleteItem(itemGotten);
                 }}
                 catch(Exception e){}  
             }

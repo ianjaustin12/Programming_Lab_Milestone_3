@@ -2,11 +2,11 @@ import java.util.Iterator;
 
 public class FinalBoss extends Monster {
     public FinalBoss(){
-        super("Boss Man", 100);
-        super.setspecialAbility("Get Fired!");
-        super.addMonsterItems(new Item("Writing Utensil", 7));
-        super.addMonsterItems(new Item("Paper", 14));
-        super.addMonsterItems(new Item("Notebook", 2));
+        super("Voldemort the Poltergeist", 100);
+        super.setspecialAbility("AVADA KADAVARA!");
+        super.addMonsterItems(new Item("Ghost Magic", 7));
+        super.addMonsterItems(new Item("Shred spell", 14));
+        super.addMonsterItems(new Item("Stun spell", 2));
         super.addMonsterItems(new Item("HR Meeting", 5));
         super.addMonsterItems(new Item("Government Funding", 15));
         super.addMonsterItems(new Item("Overdue Taxes",100));
