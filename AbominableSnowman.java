@@ -1,6 +1,6 @@
 public class AbominableSnowman extends Monster {
     public AbominableSnowman(){
-        super("AbominableSnowman", 5);
+        super("Abominable Snowman", 5);
         super.setspecialAbility("Melt");
         super.addMonsterItems(new Item("Ice Pack", 1));
     }

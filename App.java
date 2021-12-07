@@ -215,7 +215,7 @@ public class App {
             }
             if (input.startsWith("go to")){
                 String locName = input.substring(5).trim();
-                System.out.print("trying to move to " + locName);
+                System.out.println("trying to move to " + locName);
                 try{
                     currentUser.move(map.findByName(locName));
                 }catch(Exception e){}

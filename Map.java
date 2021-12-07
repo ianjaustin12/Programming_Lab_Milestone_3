@@ -14,7 +14,7 @@ public class Map {
     public Map(){
         map = new Location[7][5];
         //
-        init();
+        //init();
         loadFromFile();
         printMap();
     }
@@ -22,11 +22,11 @@ public class Map {
     public void init(){
         //public Location (String currentPos, int y, int x, String about,Set<Item> inItems)
         Location startingLocation = new Location("start", 0, 2, "Welcome to the beginning of your journey!", null);
-            startingLocation.addItem(new Item("starter sword", 1));
-            startingLocation.addItem(new Item("starter shield", 1));
+        startingLocation.addItem(new Item("starter sword", 1));
+        startingLocation.addItem(new Item("starter shield", 1));
         Location loc1 = new Location("Cave Entrance", 1, 2, "OOO a spooky cave, I wonder whats around here.", null);
-            loc1.addItem(new Item("bugs", 0));
-            loc1.addItem(new Item("mildew", 0));
+        loc1.addItem(new Item("bugs", 0));
+        loc1.addItem(new Item("mildew", 0));
         Location loc2 = new Location("Dug Out", 1, 1, "Wish I had a ball and a bat to play with.", null);
         loc2.addItem(new Item("bat", 5));
         loc2.addItem(new Item("ball", 2));
