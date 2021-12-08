@@ -70,6 +70,7 @@ public class Help {
         String instructions = "In Fight Commands:\n";
         instructions += "- Type your decision to battle (\"rock\" \"paper\" or \"scissors\")\n";
         instructions += "- Type 'help' to see the help menu on rules of the game\n";
+        instructions += "- Type 'use' to use an item you have.\n";
         System.out.println(instructions);
         System.out.println(
                 "******************************************************************************************************");

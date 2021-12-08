@@ -71,9 +71,11 @@ public class Encounter {
                     String getItem  = App.scan.nextLine(); 
                     Item item = player.getItemByString(getItem);
                     App.currentUser.useItem(item);
+                    commandIsValid = true;
                     break;
                 case "admin kill":
                     monster.health = 0;
+                    commandIsValid = true;
                     break;
                 default : 
                     System.out.println("Sorry, I don't understand. Please enter a recognizable command.");
