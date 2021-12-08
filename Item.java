@@ -1,13 +1,15 @@
-import java.io.Serializable;
-
-public class Item implements Serializable{
-    private String name;    
-    private int score;
-    private Location location;
+public class Item{
     
-    public Item(String name, int score) {
+    private String name;
+    private int score;
+    private int health;
+    private int strength;
+    
+    public Item(String name, int score, int health, int strength) {
         this.name = name;
         this.score = score;
+        this.health = health;
+        this.strength = strength;
     }
 
     public String getName() {
@@ -17,14 +19,17 @@ public class Item implements Serializable{
     public int getScore() {
         return score;
     }
-public Location getLocation(){
-    return location;
-}
-public void setLocation(Location location) {
-    this.location = location;
-}
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int getStrength() {
+        return strength;
+    }
     @Override
     public String toString(){
-        return "name = " + name + " score = " + score;
+        return name;
     }
+
 }

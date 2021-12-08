@@ -1,7 +1,0 @@
-implement getItem for Monster and user in ScorableItem.java
-implement user using items in battle 
-implement shield variable to be used in battle 
-implement lives item 
-fix the location stuff
-implement final battle in endGame method on app.java
-implement steal method from monster/user 
