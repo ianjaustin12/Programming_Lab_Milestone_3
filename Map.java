@@ -15,7 +15,7 @@ public class Map {
 
     public Map(){
         locations = new Location[2][15];
-        size = (int)Math.ceil(Math.random()*10);
+        size = (int)Math.ceil(Math.random()*10 +5);
         map = new Location[size][size];
         //
         init(); 
@@ -28,7 +28,7 @@ public class Map {
         Location startingLocation = new Location("start", 0, 2, "Welcome to the beginning of your journey!", null);
         startingLocation.addItem(new Item("starter sword", 0, 0 ,1));
         startingLocation.addItem(new Item("starter shield", 0,1,0));
-        Location loc1 = new Location("Cave Entrance", 1, 2, "OOO a spooky cave, I wonder whats around here.", null);
+        Location loc1 = new Location("Cave", 1, 2, "OOO a spooky cave, I wonder whats around here.", null);
         loc1.addItem(new Item("pile of bugs", 1,0,0));
         Location loc2 = new Location("Dug Out", 1, 1, "Wish I had a ball and a bat to play with.", null);
         loc2.addItem(new Item("bat", 0,0,5));
@@ -64,7 +64,8 @@ public class Map {
         locations[0] = new Location[]{loc1,loc2,loc3,loc4,loc5,loc6,loc8,loc9,loc10,loc11,loc12,loc13,loc14,loc15,loc16};
         locations[1] = new Location[]{startingLocation, finalBoss, treasureRoom};
         randomizeMap();        
-        saveToFile();
+        //saveToFile();
+        printMap();
     }
     public Location getStartingLocation(){
         return findByName(starting_Location);
@@ -83,18 +84,23 @@ public class Map {
             locations[1][2].setXIndex((map.length - 1) / 2);
             locations[1][2].setYIndex(0);
 
-    //randomizes location and adds border;    
+    //randomizes location and adds border;
+    for(Location location: locations[0]){
+        location.setXIndex(-1);
+    }
+    //int locationsCount = 1;    
         for (int y = 0; y < map.length -1; y++){
             for (int x = 0; x < map.length -1; x++){
                 if (map[y][x] != null)
                     continue;
-                else if (y == 0 || y == map.length-1|| x == 0 || x == map.length-1)
+                else if (y == 0 || y == map.length-2|| x == 0 || x == map.length-2)
                     map[y][x] = new Location("empty", y, x, "", null);
-                else if (Math.random() >= ((double)map.length)/locations[1].length){
+                else if (Math.random() <= 0.55){//locationsCount != locations[0].length &&((double)locationsCount/locations[1].length)/((double)(x+y)/size*size)){
                     int rand = (int)Math.ceil(Math.random() * locations[1].length);
                     map[y][x] = locations[0][rand];
                     locations[0][rand].setXIndex(x);
                     locations[0][rand].setYIndex(y);
+                    //locationsCount++; 
                 }
                 else{
                     map[y][x] = new Location("Hall", y, x, "Just a hall way no monsters in here", null);
@@ -105,13 +111,17 @@ public class Map {
     }
 //function to print map as 2d Array
     public void printMap(){
-        for(int i = 0; i<7; i++){
+        for(int i = 0; i<map.length-1; i++){
             String row = "";
-            for(int j = 0; j<5; j++)
-                if( map[i][j] == null)
-                    row += "    empty";
+            for(int j = 0; j<map.length-1; j++)
+                if(map[i][j] == null|| map[i][j].getName().equalsIgnoreCase("Treasure Room")|| map[i][j].getName().equalsIgnoreCase("empty"))
+                    row += String.format("%10s", "").replace(" ", "*");
+                else if(map[i][j].getName().equalsIgnoreCase("Treasure Room") && App.currentUser.getLocation().getName().equalsIgnoreCase("Treasure Room"))
+                    row += String.format("%10s", findByIndex(i, j).getName());
+                // else if(map[i][j].getName().equalsIgnoreCase(App.currentUser.getLocation().getName()))
+                //     row += String.format("%10s", findByIndex(i, j).getName().replace(" ", "?"));
                 else
-                    row += "    " + findByIndex(i, j).getName();
+                    row += String.format("%10s", findByIndex(i, j).getName());
             System.out.println(row);
         }
     }

@@ -217,20 +217,20 @@ public class User {
                 loc = map.getWestLocation(location);;
                 break;
         }
-        if(loc != null){
+        if(loc != null && loc.getName() != "empty"){
             previousLocation = location;
-        location = loc;
-        if(Math.random()>0/5){
-            Encounter e = new Encounter();
-            if(!e.getUserWon()){
-                location = previousLocation;
+            location = loc;
+            if(Math.random()>0/5){
+                Encounter e = new Encounter();
+                if(!e.getUserWon()){
+                    location = previousLocation;
+                }
             }
+            location.printOnEnter();
+            }
+            else
+                System.out.println("Whoopsies you cant go there.");
         }
-        location.printOnEnter();
-        }
-        else
-            System.out.println("Whoopsies you cant go there.");
-    }
     
     public void move(Location loc){
         previousLocation = location;
