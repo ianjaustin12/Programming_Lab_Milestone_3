@@ -71,6 +71,7 @@ public class Map {
         return findByName(starting_Location);
     }
     public void randomizeMap() {
+        Location[] randLocs = locations[0];
         map = new Location[size][size];
         
     //set static locations onto the map start, boss, treasure 
@@ -81,26 +82,42 @@ public class Map {
             locations[1][1].setXIndex((map.length - 1) / 2);
             locations[1][1].setYIndex(0);
             map[(map.length - 1) / 3][0] = locations[1][2];
-            locations[1][2].setXIndex((map.length - 1) / 2);
+            locations[1][2].setXIndex((map.length - 1) / 3);
             locations[1][2].setYIndex(0);
-
+    //keeps current location
+    try{
+        if (App.currentUser.getLocation() != null){
+            map[App.currentUser.getLocation().getXIndex()][App.currentUser.getLocation().getYIndex()] = App.currentUser.getLocation();
+        }
+        }catch(Exception e){}
     //randomizes location and adds border;
     for(Location location: locations[0]){
-        location.setXIndex(-1);
+        try{
+        if (location != App.currentUser.getLocation())
+            location.setXIndex(-1);
+        }catch(Exception e){}
     }
-    //int locationsCount = 1;    
+    int locationsCount = 1;    
         for (int y = 0; y < map.length -1; y++){
             for (int x = 0; x < map.length -1; x++){
                 if (map[y][x] != null)
                     continue;
                 else if (y == 0 || y == map.length-2|| x == 0 || x == map.length-2)
                     map[y][x] = new Location("empty", y, x, "", null);
-                else if (Math.random() <= 0.55){//locationsCount != locations[0].length &&((double)locationsCount/locations[1].length)/((double)(x+y)/size*size)){
-                    int rand = (int)Math.ceil(Math.random() * locations[1].length);
-                    map[y][x] = locations[0][rand];
-                    locations[0][rand].setXIndex(x);
-                    locations[0][rand].setYIndex(y);
-                    //locationsCount++; 
+                else if (Math.random() > .5 && locationsCount != randLocs.length ){
+                    int rand;
+                    while(true){
+                        rand = (int)Math.ceil(Math.random() * (randLocs.length-locationsCount));
+                        try{
+                            if(randLocs[rand] != App.currentUser.getLocation())
+                                break;
+                        }catch(Exception e){break;}
+                    }
+                    map[y][x] = randLocs[rand];
+                    randLocs[rand].setXIndex(x);
+                    randLocs[rand].setYIndex(y);
+                    randLocs[rand] = randLocs[randLocs.length - locationsCount];
+                    locationsCount++; 
                 }
                 else{
                     map[y][x] = new Location("Hall", y, x, "Just a hall way no monsters in here", null);

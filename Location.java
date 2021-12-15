@@ -84,9 +84,10 @@ public class Location implements Serializable{
         Iterator<Item> it = items.iterator();
         if(it.hasNext()){
             Item itemit = it.next();
-            System.out.println("Item : " + itemit);
-                
+            System.out.println("Item : " + itemit);   
         }
+        else
+        {System.out.println("Those are all the items.");}
     }
     
 //print methods

@@ -11,7 +11,10 @@ public class Encounter {
         player = App.currentUser;
         playerStrength = player.getStrength();
         location = player.getLocation();
-        monster = location.getMonster();
+        if (location.getMonster() == null)
+            monster = MonsterFactory.getRandomMonster(this);
+        else
+            monster = location.getMonster();
 
         displayInitialEncounterText();
         while (bothParticipantsAreAlive()) {
@@ -102,18 +105,21 @@ public class Encounter {
                 while(true){
                     String input =  App.scan.nextLine().trim();
                     if(input.equalsIgnoreCase("yes")){
-                        monster.setStrength(monster.getStrength() - shield.getStrength());
-                        monster.attack();
-                        monster.setStrength(monster.getStrength() + shield.getStrength());
+                        System.out.println("No damage taken. phew.");
                         player.loseItem(shield);
+                        break;
                     }
                     else if(input.equalsIgnoreCase("no")){
                         monster.attack();
+                        break;
                     }
                     else{
                         System.out.println("Must input a yes or no");
                     }
                 }
+            }
+            else{
+                monster.attack();
             }
             
         }

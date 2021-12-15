@@ -55,10 +55,9 @@ public class User {
             this.lives += item.getHealth();
             this.strength += item.getStrength();
             System.out.println("You have picked up " + item.getName());
-            System.out.println("You now have " + score + "points.");
-            System.out.println("You now have " + lives + "lives.");
-            System.out.println("You now have " + strength + "points.");
-            System.out.println("..................................................................................");
+            System.out.println("You now have " + score + " points.");
+            System.out.println("You now have " + lives + " lives.");
+            System.out.println("You now have " + strength + " points.");
             System.out.println();
             loc.removeItem(item);
         }
@@ -72,9 +71,9 @@ public class User {
             this.lives += item.getHealth();
             this.strength += item.getStrength();
             System.out.println("You have picked up " + item.getName());
-            System.out.println("You now have " + score + "points.");
-            System.out.println("You now have " + lives + "lives.");
-            System.out.println("You now have " + strength + "points.");
+            System.out.println("You now have " + score + " points.");
+            System.out.println("You now have " + lives + " lives.");
+            System.out.println("You now have " + strength + " points.");
             System.out.println("..................................................................................");
             System.out.println();
             loc.removeItem(item);
@@ -85,31 +84,47 @@ public class User {
         Set<Item> i = location.getItems();
         if(i != null && !i.isEmpty() && i.size() != 0){
             //gets yes or no from user
-            System.out.println("Do you want to pick up an item? y/n");
-            while(true){
+            System.out.println("Do you want to pick up an item? yes/no");
+            boolean pickedUp = true;
+            while(pickedUp){
                 String input =  App.scan.nextLine();
             if (input.equals("yes")){
             //gets item choice from user
-                System.out.println("What item do you want to pick up?");
-                String item = App.scan.nextLine();
-                try{
-                    Item itemGotten = location.getItemByString(item);
-                    //monster appears with percentage increase by 10% every 5 points on item
-                    //true if fight won or no monster, false if fight lost
-                    if (itemGotten.getStrength()/50 > Math.random()){
-                        pickUpItem(item);
-                        location.removeItem(itemGotten);
+                while(true){
+                    System.out.println("What item do you want to pick up?");
+                    String item = App.scan.nextLine();
+                    try{
+                        Item itemGotten = location.getItemByString(item);
+                        //monster appears with percentage increase by 10% every 5 points on item
+                        //true if fight won or no monster, false if fight lost
+                        if (itemGotten.getStrength()/50 > Math.random()){
+                            Encounter e = new Encounter();
+                            if(!e.getUserWon()){
+                                pickUpItem(item);
+                                location.removeItem(itemGotten);
+                                pickedUp = false;
+                                break;
+                            }
+                        }
+                        else{
+                            pickUpItem(item);
+                            location.removeItem(itemGotten);
+                            pickedUp = false;
+                            break;
+                        }
                     }
+                    catch(Exception e){
+                        System.out.println("Item not understood. Please try again.");
+                    }  
                 }
-                catch(Exception e){}  
             }
-            else if(input.equals("no")){break;}
+            else if(input.equals("no")){pickedUp = false;}
             else{
                 System.out.println("please say yes or no");
             }
         }}
         else {
-            System.out.println("Okay... Move on.");
+            System.out.println("There is no items here.");
         }
         System.out.println("...............................End Item Pickup....................................");
     }
@@ -220,7 +235,7 @@ public class User {
         if(loc != null && loc.getName() != "empty"){
             previousLocation = location;
             location = loc;
-            if(Math.random()>0/5){
+            if(Math.random()>0.5){
                 Encounter e = new Encounter();
                 if(!e.getUserWon()){
                     location = previousLocation;

@@ -40,7 +40,8 @@ public class Help {
         instructions += "- Type a direction to move (N/E/S/W)\n";
         instructions += "- Type 'Look' to see the items at your current location\n";
         instructions += "- type 'Fight' to fight the monster at your current location\n";
-        instructions += "- After the prompt type the \"item's name\" to get an item\n";
+        instructions += "- Type 'pick up' to pick up the items at your current location\n";
+        instructions += "- After the prompt type the \"item's name\" to get that item\n";
         instructions += "- Type 'bag' to see all your items in your inventory\n";
         instructions += "- Type 'help' to see this help menu again\n";
         instructions += "- Type 'i' to see the in game instructions on how to play\n";

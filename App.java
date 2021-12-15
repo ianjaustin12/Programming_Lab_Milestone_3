@@ -115,12 +115,12 @@ public class App {
                     Help.getHelp();
                     isMove = false;
                     break;
-                case "use":
-                    System.out.println("Which item?");
-                    String getItem  = App.scan.nextLine(); 
-                    Item item = currentUser.getItemByString(getItem);
-                    App.currentUser.useItem(item);
-                    break;
+                // case "use":
+                //     System.out.println("Which item?");
+                //     String getItem  = App.scan.nextLine(); 
+                //     Item item = currentUser.getItemByString(getItem);
+                //     App.currentUser.useItem(item);
+                //     break;
                 case "admin":
                     admin();
                     break;
@@ -136,9 +136,9 @@ public class App {
                     isMove = false;
                     break;  
             }
+        }
         //shows move options
         showCurrentOptions();
-        }
     }
     public static void showCurrentOptions() {
         System.out.println("..................................Current Options.................................");
