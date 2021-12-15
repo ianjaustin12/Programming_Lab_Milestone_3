@@ -1,3 +1,11 @@
+package Utils;
+import Monsters.AbominableSnowman;
+import Monsters.Dracula;
+import Monsters.Giant;
+import Monsters.James;
+import Monsters.Monster;
+import Objects.Encounter;
+
 public class MonsterFactory {
 
     private static final Monster[] POSSIBLE_MONSTERS = 

@@ -1,3 +1,5 @@
+package Monsters;
+import Utils.App;
 public class  Giant extends Monster{
     
     public Giant(){

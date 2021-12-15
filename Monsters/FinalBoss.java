@@ -1,3 +1,6 @@
+package Monsters;
+import Utils.App;
+
 public class FinalBoss extends Monster{
     
     public FinalBoss(){

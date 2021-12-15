@@ -1,3 +1,10 @@
+package Objects;
+import Monsters.FinalBoss;
+import Monsters.Monster;
+import Utils.App;
+import Utils.Help;
+import Utils.MonsterFactory;
+
 public class Encounter {
 
     private User player;
@@ -77,7 +84,7 @@ public class Encounter {
                     commandIsValid = true;
                     break;
                 case "admin kill":
-                    monster.health = 0;
+                    monster.setHealth(0);
                     commandIsValid = true;
                     break;
                 default : 

@@ -1,3 +1,5 @@
+package Monsters;
+import Utils.App;
 
 public abstract class Monster {
 
@@ -20,6 +22,9 @@ public abstract class Monster {
     }
     public int getHealth() {
         return health;
+    }
+    public void setHealth(int h) {
+       health = h;
     }
     public int getStrength(){
         return dmg;

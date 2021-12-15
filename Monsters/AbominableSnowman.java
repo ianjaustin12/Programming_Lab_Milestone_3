@@ -1,3 +1,6 @@
+package Monsters;
+
+
 public class AbominableSnowman extends Monster{
     
     public AbominableSnowman(){

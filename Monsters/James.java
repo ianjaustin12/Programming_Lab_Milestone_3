@@ -1,3 +1,4 @@
+package Monsters;
 public class James extends Monster{
     
     public James(){
